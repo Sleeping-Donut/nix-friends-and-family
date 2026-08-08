@@ -1,0 +1,130 @@
+{
+  description = "Base NixOS module for friends and family";
+
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-26.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+  };
+
+  outputs = inputs@{ self, nixpkgs, nixos-hardware, nix-flatpak, home-manager, ... }: {
+    templates.default = {
+      path = ./template;
+      description = "Template to make semi-managed system config";
+      welcomeText = ''
+        Before building, please:
+        1. Rename PC_NAME_HERE and USERNAME_HERE in flake.nix
+        2. Set your correct COMPUTER_MODEL from: https://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+        3. Run `nixos-generate-config --root /` and copy the generated hardware-configuration.nix into the directory.
+        4. To enable auto-upgrades, ensure these config files are in /etc/nixos
+        Full info in README
+      '';
+    };
+
+    nixosModules.nixFriendsAndFamily = { config, lib, pkgs, ... }: {
+      imports = [
+        nix-flatpak.nixosModules.nix-flatpak
+        home-manager.nixosModules.home-manager
+      ];
+
+      options.nixFriendsAndFamily = {
+        enable = lib.mkEnableOption "Enable Shared Base";
+        desktop = lib.mkOption {
+          type = lib.types.enum [ "gnome" "kde" "none" ];
+          default = "kde";
+          description = "Desktop Environment selection";
+        };
+        bootloader = lib.mkOption {
+          type = lib.types.enum [ "systemd-boot" "grub" "limine" ];
+          default = "systemd-boot";
+          description = "Bootloader selection";
+        };
+      };
+
+      config = let
+        isGnome = config.nixFriendsAndFamily.desktop == "gnome";
+        isKde = config.nixFriendsAndFamily.desktop == "kde";
+        isBoot = loader: config.nixFriendsAndFamily.bootloader == loader;
+      in lib.mkIf config.nixFriendsAndFamily.enable {
+
+        # Setup GC, store optimiser and flakes cli stuff
+        nix = {
+          gc = {
+            automatic = true;
+            dates = "weekly";
+            options = "--delete-older-than 14d";
+          };
+          settings = {
+            auto-optimise-store = true;
+            experimental-features = [ "nix-command" "flakes" ];
+          };
+        };
+
+        # Background Auto-Updates pulling from base repo
+        system.autoUpgrade = {
+          enable = true;
+          flake = "/etc/nixos";
+          flags = [
+            "--update-input" "nix-friends-and-family"
+            "--no-write-lock-file"
+          ];
+          dates = "03:00";
+          randomizedDelaySec = "45min";
+          allowReboot = false; # Let user reboot on their own time
+        };
+
+        boot.loader.systemd-boot = lib.mkIf (isBoot "systemd-boot") {
+          enable = true;
+          editor = false;
+        };
+        boot.loader.grub = lib.mkIf (isBoot "grub") {
+          enable = true;
+          device = "nodev";
+          efiSupport = true;
+        };
+        boot.loader.efi.canTouchEfiVariables = lib.mkIf (isBoot "grub" || isBoot "sytemd-boot") true;
+        boot.loader.limine.enable = lib.mkIf (isBoot "limine") true;
+
+        # Setup Flatpaks and get store
+        services.flatpak = {
+          enable = true;
+          update.auto = {
+            enable = true;
+            onCalendar = "weekly";
+            onActivation = true;
+          };
+          remotes = [
+            { name = "flathub"; location = "https://dl.flathub.org/repo/flathub.flatpakrepo"; }
+          ];
+          packages = [
+            "io.github.kolunmi.Bazaar"
+          ];
+        };
+
+        # Setup KDE (if selected)
+        services.displayManager.plasma-login-manager.enable = lib.mkIf isKde true;
+        services.desktopManager.plasma6.enable = lib.mkIf isKde true;
+
+        # Setup GNOME (is selected)
+        services.displayManager.gdm.enable = lib.mkIf isGnome true;
+        services.desktopManager.gnome.enable = lib.mkIf isGnome true;
+        services.gnome = lib.mkIf isGnome {
+            core-developer-tools.enable = false;
+            gnome.games.enable = false;
+        };
+
+        # Configure home-manager
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+      };
+    };
+  };
+}
