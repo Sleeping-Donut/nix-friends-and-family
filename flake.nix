@@ -47,7 +47,7 @@
           default = "systemd-boot";
           description = "Bootloader selection";
         };
-        plymouthTheme = lib.mkOption {
+        bootTheme = lib.mkOption {
           type = lib.types.enum [ "oem" "breeze" ];
           default = "oem";
           description = "Boot splash theme: 'oem' = firmware/BIOS logo (bgrt), 'breeze' = Nix snowflake spinner";
@@ -129,7 +129,7 @@
           theme = {
             oem = "bgrt";
             breeze = "breeze";
-          }.${config.nixFriendsAndFamily.plymouthTheme};
+          }.${config.nixFriendsAndFamily.bootTheme};
         };
 
         # Setup Flatpaks and get store
