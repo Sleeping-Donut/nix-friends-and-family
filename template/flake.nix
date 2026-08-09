@@ -34,6 +34,10 @@
             networking.hostName = "PC_NAME_HERE"; # <-- Change PC name
             time.timeZone = "Europe/London";
 
+            # UK keyboard layout. Change if a different layout is needed.
+            services.xserver.xkb.layout = "gb";
+            console.keyMap = "uk";
+
             users.users.USERNAME_HERE = { # <-- Change username
               isNormalUser = true;
               extraGroups = [ "wheel" "networkmanager" ];
