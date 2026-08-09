@@ -125,6 +125,7 @@
         # Setup KDE (if selected)
         services.displayManager.plasma-login-manager.enable = lib.mkIf isKde true;
         services.desktopManager.plasma6.enable = lib.mkIf isKde true;
+        programs.kdeconnect.enable = lib.mkIf isKde true;
 
         # Setup GNOME (if selected)
         services.displayManager.gdm.enable = lib.mkIf isGnome true;
