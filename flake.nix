@@ -118,7 +118,7 @@
         services.desktopManager.gnome.enable = lib.mkIf isGnome true;
         services.gnome = lib.mkIf isGnome {
             core-developer-tools.enable = false;
-            gnome.games.enable = false;
+            games.enable = false;
         };
 
         # Configure home-manager
