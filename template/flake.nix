@@ -23,6 +23,13 @@
             nixFriendsAndFamily.enable = true;
             nixFriendsAndFamily.desktop = "gnome";
 
+            # Allow unfree packages per-name instead of the base module's blanket
+            # allowUnfree = true. Uncomment and add package names as needed.
+            nixpkgs.config.allowUnfreePredicate = pkg:
+              builtins.elem (pkg.pname or pkg.name) [
+                # "nvidia-x11" "nvidia-settings" "nvidia-persistenced"
+              ];
+
             system.stateVersion = "26.05";
             networking.hostName = "PC_NAME_HERE"; # <-- Change PC name
             time.timeZone = "Europe/London";
