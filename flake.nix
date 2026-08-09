@@ -90,7 +90,7 @@
           device = "nodev";
           efiSupport = true;
         };
-        boot.loader.efi.canTouchEfiVariables = lib.mkIf (isBoot "grub" || isBoot "sytemd-boot") true;
+        boot.loader.efi.canTouchEfiVariables = lib.mkIf (isBoot "grub" || isBoot "systemd-boot") true;
         boot.loader.limine.enable = lib.mkIf (isBoot "limine") true;
 
         # Setup Flatpaks and get store
