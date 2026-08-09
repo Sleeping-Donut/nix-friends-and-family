@@ -111,8 +111,10 @@
           ];
           packages = [
             "io.github.kolunmi.Bazaar"
-          ];
+          ] ++ lib.optionals isGnome [ "com.github.tchx84.Flatseal" ];
         };
+
+        environment.systemPackages = [ ] ++ lib.optionals isKde [ pkgs.kde-config-flatpak ];
 
         # Setup KDE (if selected)
         services.displayManager.plasma-login-manager.enable = lib.mkIf isKde true;
