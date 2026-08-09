@@ -78,9 +78,11 @@
           alsa.support32Bit = true;
           pulse.enable = true;
         };
+
         # Bluetooth (harmless on machines without an adapter)
         hardware.bluetooth.enable = true;
         services.bluetooth.enable = true;
+
         # CUPS printing + network printer discovery
         services.printing.enable = true;
         services.avahi.enable = true;
