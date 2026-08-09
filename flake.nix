@@ -88,6 +88,12 @@
         services.avahi.enable = true;
         services.avahi.nssmdns = true;
 
+        # Firmware for WiFi/BT chips not otherwise covered by nixos-hardware
+        hardware.enableRedistributableFirmware = true;
+
+        # Firmware update service for laptops
+        services.fwupd.enable = true;
+
         # Background Auto-Updates pulling from base repo
         system.autoUpgrade = {
           enable = true;
