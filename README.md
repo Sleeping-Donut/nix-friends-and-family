@@ -16,6 +16,8 @@ Recommended Btrfs layout:
 - **`@log`** (`/var/log`): System logs (separated so logs persist if you ever rollback `@root`)
 
 ```sh
+nix --extra-experimental-features 'nix-command flakes' shell nixpkgs#git nixpkgs#neovim nixpkgs#parted nixpkgs#btrfs-progs nixpkgs#dosfstools
+
 # 1. Partition drive (e.g. using cfdisk, parted, gdisk, or disko)
 # p1: EFI Boot ~1GB, p2: Swap ~4-16GB, p3: Btrfs Root rest of disk
 sudo cfdisk /dev/nvme0n1
@@ -84,6 +86,7 @@ sudo vi flake.nix
 > [!IMPORTANT]
 > Initialize Git before installing (Flakes will fail if files are untracked):
 > ```sh
+> # Needs git config user.name and user.email set
 > sudo git init
 > sudo git add .
 > ```
