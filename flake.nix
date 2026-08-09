@@ -85,7 +85,7 @@
         # CUPS printing + network printer discovery
         services.printing.enable = true;
         services.avahi.enable = true;
-        services.avahi.nssmdns = true;
+        services.avahi.nssmdns4 = true;
 
         # Firmware for WiFi/BT chips not otherwise covered by nixos-hardware
         hardware.enableRedistributableFirmware = true;
