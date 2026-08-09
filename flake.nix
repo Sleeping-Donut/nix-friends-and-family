@@ -71,6 +71,9 @@
         # NetworkManager for WiFi/ethernet (needed for KDE/GNOME network applets)
         networking.networkmanager.enable = true;
 
+        # CUPS printing (not enabled by default)
+        services.printing.enable = true;
+
         # Background Auto-Updates pulling from base repo
         system.autoUpgrade = {
           enable = true;
