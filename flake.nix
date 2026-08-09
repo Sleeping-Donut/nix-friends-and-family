@@ -96,9 +96,11 @@
         # Setup Flatpaks and get store
         services.flatpak = {
           enable = true;
-          update.auto = {
-            enable = true;
-            onCalendar = "weekly";
+          update = {
+            auto = {
+              enable = true;
+              onCalendar = "weekly";
+            };
             onActivation = true;
           };
           remotes = [
