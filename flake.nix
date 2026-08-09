@@ -118,7 +118,6 @@
         };
 
         environment.systemPackages = [ ] ++ lib.optionals isKde [
-          pkgs.kdePackages.flatpak-kcm
           pkgs.kdePackages.kpipewire
         ];
 
