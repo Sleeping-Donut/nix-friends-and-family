@@ -81,7 +81,6 @@
 
         # Bluetooth (harmless on machines without an adapter)
         hardware.bluetooth.enable = true;
-        services.bluetooth.enable = true;
 
         # CUPS printing + network printer discovery
         services.printing.enable = true;
