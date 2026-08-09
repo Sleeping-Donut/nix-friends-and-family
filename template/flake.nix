@@ -25,7 +25,7 @@
 
             system.stateVersion = "26.05";
             networking.hostName = "PC_NAME_HERE"; # <-- Change PC name
-            time.timezone = "Europe/London";
+            time.timeZone = "Europe/London";
 
             users.users.USERNAME_HERE = { # <-- Change username
               isNormalUser = true;
