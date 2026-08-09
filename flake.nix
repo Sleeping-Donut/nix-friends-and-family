@@ -71,6 +71,13 @@
         # NetworkManager for WiFi/ethernet (needed for KDE/GNOME network applets)
         networking.networkmanager.enable = true;
 
+        # Audio via PipeWire (KDE enables it itself; GNOME does not, so set for both)
+        services.pipewire = {
+          enable = true;
+          alsa.enable = true;
+          alsa.support32Bit = true;
+          pulse.enable = true;
+        };
         # CUPS printing + network printer discovery
         services.printing.enable = true;
         services.avahi.enable = true;
