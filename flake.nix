@@ -47,6 +47,11 @@
           default = "systemd-boot";
           description = "Bootloader selection";
         };
+        plymouthTheme = lib.mkOption {
+          type = lib.types.enum [ "oem" "breeze" ];
+          default = "oem";
+          description = "Boot splash theme: 'oem' = firmware/BIOS logo (bgrt), 'breeze' = Nix snowflake spinner";
+        };
       };
 
       config = let
@@ -117,6 +122,15 @@
         };
         boot.loader.efi.canTouchEfiVariables = lib.mkIf (isBoot "grub" || isBoot "systemd-boot") true;
         boot.loader.limine.enable = lib.mkIf (isBoot "limine") true;
+
+        # Boot splash (hide systemd boot messages from users)
+        boot.plymouth = {
+          enable = true;
+          theme = {
+            oem = "bgrt";
+            breeze = "breeze";
+          }.${config.nixFriendsAndFamily.plymouthTheme};
+        };
 
         # Setup Flatpaks and get store
         services.flatpak = {
