@@ -5,7 +5,9 @@ Nix flakes to make an easy to update robust system for friends and family.
 ## Deployment & Setup Guide
 
 ### Step 0: Disk Setup (Only for Fresh CLI Installs)
-> **Note:** If you used the NixOS Graphical Installer (Calamares) first, skip to **Step 1**.
+
+> [!NOTE]
+> If you used the NixOS Graphical Installer (Calamares) first, skip to **Step 1**.
 
 Recommended Btrfs layout:
 - **`@root`** (`/`): OS root
@@ -79,7 +81,8 @@ sudo vi flake.nix
 4. `bootloader`: Choose `"systemd-boot"`, `"grub"`, or `"limine"`.
 5. `nixos-hardware`: (Optional) Uncomment hardware module if using a supported laptop.
 
-> CRITICAL: Initialize Git before installing (Flakes will fail if files are untracked):
+> [!IMPORTANT]
+> Initialize Git before installing (Flakes will fail if files are untracked):
 > ```sh
 > sudo git init
 > sudo git add .
