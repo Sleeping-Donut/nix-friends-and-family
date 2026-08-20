@@ -109,6 +109,7 @@
           dates = "03:00";
           randomizedDelaySec = "45min";
           allowReboot = false; # Let user reboot on their own time
+          operation = "boot"; # apply generation next boot not immediately
         };
 
         boot.loader.systemd-boot = lib.mkIf (isBoot "systemd-boot") {
