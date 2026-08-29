@@ -112,6 +112,11 @@
           operation = "boot"; # apply generation next boot not immediately
         };
 
+        i18n = {
+          defaultLocale = "en_GB.UTF-8";
+          extraLocaleSettings.LC_ALL = "en_GB.UTF-8";
+        };
+
         boot.loader.systemd-boot = lib.mkIf (isBoot "systemd-boot") {
           enable = true;
           editor = false;
