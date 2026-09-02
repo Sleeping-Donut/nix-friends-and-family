@@ -20,6 +20,7 @@
           # nixos-hardware.nixosModules.COMPUTER_MODEL # <-- Change computer model
 
           {
+            system.stateVersion = "26.05";
             nixFriendsAndFamily.enable = true;
             nixFriendsAndFamily.desktop = "kde";
 
@@ -30,7 +31,6 @@
                 # "nvidia-x11" "nvidia-settings" "nvidia-persistenced"
               ];
 
-            system.stateVersion = "26.05";
             networking.hostName = "PC_NAME_HERE"; # <-- Change PC name
 
             time.timeZone = "Europe/London";
