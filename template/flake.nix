@@ -32,6 +32,7 @@
               ];
 
             networking.hostName = "PC_NAME_HERE"; # <-- Change PC name
+            system.autoUpgrade.flake = "/etc/nixos"; # <-- Change Flake location
 
             time.timeZone = "Europe/London";
             i18n.defaultLocale = "en_GB.UTF-8";

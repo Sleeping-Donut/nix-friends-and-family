@@ -117,6 +117,7 @@ sudo vi flake.nix
 
 1. `PC_NAME_HERE`: Match target system hostname in both `nixosConfigurations` and `networking.hostName`.
 2. `USERNAME_HERE`: Set target username.
+3. Change `system.autoUpgrade.flake` to match the location of your flake.
 3. `desktop`: Choose `"gnome"`, `"kde"`, or `"none"`.
 4. `bootloader`: Choose `"systemd-boot"`, `"grub"`, or `"limine"`.
 5. `nixos-hardware`: (Optional) Uncomment hardware module if using a supported laptop.
