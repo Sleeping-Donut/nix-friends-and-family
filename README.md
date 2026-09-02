@@ -150,3 +150,8 @@ chown :USERNAME_HERE /etc/nixos/home.nix
 ln -s /etc/nixos/home.nix /home/USERNAME_HERE/home.nix
 ```
 
+## Extra things to note
+
+These configs should work for raspberry pi as well, however there will probably need to be other stuff options set in your flake.
+See the [nixos raspberry pi docs](https://wiki.nixos.org/wiki/NixOS_on_ARM/Raspberry_Pi) page for details.
+
