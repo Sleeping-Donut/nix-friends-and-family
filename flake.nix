@@ -55,10 +55,11 @@
       };
 
       config = let
-        isGnome = config.nixFriendsAndFamily.desktop == "gnome";
-        isKde = config.nixFriendsAndFamily.desktop == "kde";
-        isBoot = loader: config.nixFriendsAndFamily.bootloader == loader;
-      in lib.mkIf config.nixFriendsAndFamily.enable {
+        cfg = config.nixFriendsAndFamily;
+        isGnome = cfg.desktop == "gnome";
+        isKde = cfg.desktop == "kde";
+        isBoot = loader: cfg.bootloader == loader;
+      in lib.mkIf cfg.enable {
 
         # Setup GC, store optimiser and flakes cli stuff
         nix = {
@@ -136,7 +137,7 @@
           theme = {
             oem = "bgrt";
             breeze = "breeze";
-          }.${config.nixFriendsAndFamily.bootTheme};
+          }.${cfg.bootTheme};
         };
 
         # Setup Flatpaks and get store
