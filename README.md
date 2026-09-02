@@ -140,3 +140,13 @@ sudo vi flake.nix
 
 Run this AFTER booting into the newly installed system as the user (or via `nixos-enter`):
 
+Symlink the home.nix file to the user's home dir. Do this for each user defined in the config.
+This allows each user to have their own packages and environment controlled by them.
+
+```sh
+# /etc/nixos/USERNAME_HERE.nix -> /home/USERNAME_HERE/home.nix
+chmod ug=rw,o= /etc/nixos/home.nix
+chown :USERNAME_HERE /etc/nixos/home.nix
+ln -s /etc/nixos/home.nix /home/USERNAME_HERE/home.nix
+```
+
