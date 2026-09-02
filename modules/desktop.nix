@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
 let
   cfg = config.nixFriendsAndFamily;
+  isGnome = cfg.desktop == "gnome";
+  isKde = cfg.desktop == "kde";
 in
 {
   config = lib.mkIf cfg.enable {
