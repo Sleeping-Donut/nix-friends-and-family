@@ -46,6 +46,9 @@
             };
             # Make a home.nix to be added to the repo
             home-manager.users.USERNAME_HERE = import ./home.nix;
+
+            # If adding another user with accompanying home file remember to
+            # `git add` the file so nix knows its there
           }
         ];
       };
