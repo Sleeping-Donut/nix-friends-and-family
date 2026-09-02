@@ -5,8 +5,9 @@ let
 in
 {
   config = lib.mkIf cfg.enable {
-    # Polkit Restriction: Require wheel for Flatpak management
     security.polkit = lib.mkMerge [
+
+    # Polkit Restriction: Require wheel for Flatpak management
       (lib.mkIf cfg.restrictions.flatpakNeedsWheel {
         extraConfig = ''
           if (action.id.startsWith("org.freedesktop.Flatpak.") && !subject.isInGroup("wheel")) {
@@ -14,6 +15,7 @@ in
           }
         '';
       })
+
     ];
 
     # Force NetworkManager to put local dnsmasq at the top of /etc/resolv.conf ahead of DHCP DNS
