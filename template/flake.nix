@@ -21,7 +21,7 @@
 
           {
             nixFriendsAndFamily.enable = true;
-            nixFriendsAndFamily.desktop = "gnome";
+            nixFriendsAndFamily.desktop = "kde";
 
             # Allow unfree packages per-name instead of the base module's blanket
             # allowUnfree = true. Uncomment and add package names as needed.
