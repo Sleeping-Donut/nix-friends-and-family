@@ -2,6 +2,30 @@
 
 Nix flakes to make an easy to update robust system for friends and family.
 
+## Default Configuration
+
+### System Maintenance & Upgrades
+- **Automatic Minor Updates:** Installed in the background and activated on the next boot.
+- **Controlled Major Updates:** Triggered only via upstream source to prevent unexpected breaking changes on managed systems.
+- **Automatic Garbage Collection:** Periodically cleans the Nix store to conserve disk space.
+- **Nix Flakes:** `flakes` and `nix-command` experimental features enabled by default.
+
+### Hardware & Desktop Experience
+- **Desktop Environments:** Simplified toggles for **KDE Plasma** or **GNOME**.
+- **Bootloader & Splash:** Configurable support for `systemd-boot`, `grub`, or `limine` alongside a Plymouth boot screen.
+- **Connectivity & Hardware:** NetworkManager, Bluetooth, CUPS printing, and FWUPD firmware updating enabled out of the box.
+- **Locale:** Defaults to `en_GB`
+
+### Application & User Management
+- **Home Manager:** Pre-integrated for user-level configuration management.
+- **Flatpak Integration:** Flathub enabled out of the box.
+  - **Weekly Auto-Updates:** Flatpaks automatically update on a weekly schedule.
+  - **Store Front:** Bazaar installed as the default GUI store.
+  - **Permission Management:** Environment-aware tools integrated automatically (Flatseal for GNOME, KDE Flatpak KCM for KDE).
+### Security & Parental Controls
+- **Admin-Gated Flatpaks:** Optional toggle to require `wheel`/admin privileges for Flatpak management.
+- **Child-Safer Networking:** Local `dnsmasq` DNS filtering with Cloudflare Family (1.1.1.3) upstream, forced YouTube Restricted Mode, and wildcard domain blocking (e.g., TikTok).
+
 ## Deployment & Setup Guide
 
 ### Step 0: Disk Setup (Only for Fresh CLI Installs)
@@ -9,11 +33,15 @@ Nix flakes to make an easy to update robust system for friends and family.
 > [!NOTE]
 > If you used the NixOS Graphical Installer (Calamares) first, skip to **Step 1**.
 
-Recommended Btrfs layout:
-- **`@root`** (`/`): OS root
-- **`@home`** (`/home`): User data
-- **`@nix`** (`/nix`): Nix store (separated so Btrfs root snapshots don't waste space on package caches)
-- **`@log`** (`/var/log`): System logs (separated so logs persist if you ever rollback `@root`)
+| Partition@Subvolume | Mount Point | Recommended Size | Purpose |
+| :--- | :--- | :--- | :--- |
+| **`p1`**      | `/boot`    |~1-2GB        | EFI boot |
+| **`p2`**      | swap       | ~4-16GB      | Swap |
+| **`p3`**      | -          | Rest of disk | Btrfs root |
+| **`p3@root`** | `/`        | -            | OS root |
+| **`p3@home`** | `/home`    | -            | User data |
+| **`p3@nix`**  | `/nix`     | -            | Nix store - split for separate snapshots |
+| **`p3@log`**  | `/var/log` | -            | System logs - split for separate snapshots |
 
 ```sh
 nix --extra-experimental-features 'nix-command flakes' shell nixpkgs#git nixpkgs#neovim nixpkgs#parted nixpkgs#btrfs-progs nixpkgs#dosfstools
