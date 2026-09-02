@@ -46,18 +46,20 @@ Nix flakes to make an easy to update robust system for friends and family.
 ```sh
 nix --extra-experimental-features 'nix-command flakes' shell nixpkgs#git nixpkgs#neovim nixpkgs#parted nixpkgs#btrfs-progs nixpkgs#dosfstools
 
+DISK='/dev/nvme0n1'
+PARTITION="${DISK}p" # for mmcblk or nvme put p at end, for sda type drives omit p
+
 # 1. Partition drive (e.g. using cfdisk, parted, gdisk, or disko)
-# p1: EFI Boot ~1GB, p2: Swap ~4-16GB, p3: Btrfs Root rest of disk
-sudo cfdisk /dev/nvme0n1
+sudo cfdisk "$DISK"
 
 # 2. Format partitions
-sudo mkfs.fat -F32 -n BOOT /dev/nvme0n1p1
-sudo mkswap -L SWAP /dev/nvme0n1p2
-sudo swapon /dev/nvme0n1p2
-sudo mkfs.btrfs -f -L NIXOS /dev/nvme0n1p3
+sudo mkfs.fat -F32 -n BOOT "${PARTITION}1"
+sudo mkswap -L SWAP "${PARTITION}2"
+sudo swapon "${PARTITION}2"
+sudo mkfs.btrfs -f -L NIXOS "${PARTITION}3"
 
 # 3. Create Btrfs subvolumes
-sudo mount /dev/disk/by-label/NIXOS /mnt
+sudo mount "${PARTITION}3" /mnt
 sudo btrfs subvolume create /mnt/@root
 sudo btrfs subvolume create /mnt/@home
 sudo btrfs subvolume create /mnt/@nix
@@ -65,12 +67,12 @@ sudo btrfs subvolume create /mnt/@log
 sudo umount /mnt
 
 # 4. Mount subvolumes with zstd compression
-sudo mount -o subvol=@root,compress=zstd,noatime /dev/disk/by-label/NIXOS /mnt
+sudo mount -o subvol=@root,compress=zstd,noatime "${PARTITION}3" /mnt
 sudo mkdir -p /mnt/{boot,home,nix,var/log}
-sudo mount -o subvol=@home,compress=zstd,noatime /dev/disk/by-label/NIXOS /mnt/home
-sudo mount -o subvol=@nix,compress=zstd,noatime /dev/disk/by-label/NIXOS /mnt/nix
-sudo mount -o subvol=@log,compress=zstd,noatime /dev/disk/by-label/NIXOS /mnt/var/log
-sudo mount /dev/disk/by-label/BOOT /mnt/boot
+sudo mount -o subvol=@home,compress=zstd,noatime "${PARTITION}3" /mnt/home
+sudo mount -o subvol=@nix,compress=zstd,noatime "${PARTITION}3" /mnt/nix
+sudo mount -o subvol=@log,compress=zstd,noatime "${PARTITION}3" /mnt/var/log
+sudo mount "${PARTITION}1" /mnt/boot
 ```
 
 ### Step 1: Initialise template
