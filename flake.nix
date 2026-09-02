@@ -159,6 +159,7 @@
 
         environment.systemPackages = [ ] ++ lib.optionals isKde [
           pkgs.kdePackages.kpipewire
+          pkgs.kdePackages.flatpak-kcm
         ];
 
         # Setup KDE (if selected)
