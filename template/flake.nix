@@ -34,6 +34,7 @@
             networking.hostName = "PC_NAME_HERE"; # <-- Change PC name
 
             time.timeZone = "Europe/London";
+            i18n.defaultLocale = "en_GB.UTF-8";
 
             # UK keyboard layout. Change if a different layout is needed.
             services.xserver.xkb.layout = "gb";
