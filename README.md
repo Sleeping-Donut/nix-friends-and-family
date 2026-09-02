@@ -125,15 +125,16 @@ sudo vi flake.nix
 ### Step 4: Install or Rebuild
 
 - Option A - Fresh Live USB Install:
-    ```sh
-    sudo nixos-install --flake .#default
-    sudo nixos-enter --command "passwd USERNAME_HERE" # Set user password
-    sudo reboot
-    ```
+  ```sh
+  sudo nixos-install --flake .#default
+  sudo nixos-enter --command "passwd USERNAME_HERE" # Set user password
+  sudo reboot
+  ```
 - Option B - Existing Running System:
-    ```sh
-    sudo nixos-rebuild switch --flake .#default
-    ```
+  ```sh
+  sudo nixos-rebuild boot --flake .#default
+  sudo reboot
+  ```
 
 ### Step 5: Post-Install Home Manager Setup
 
