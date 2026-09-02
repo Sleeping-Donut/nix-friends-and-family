@@ -162,7 +162,7 @@ ln -s /etc/nixos/home.nix /home/USERNAME_HERE/home.nix
 Some users might need to be restricted if its a child account or the like.
 To apply restrictions for child or restricted user accounts, configure the `restrictions` block inside the `flake.nix`:
 
-- **Require admin (`wheel`) for Faltpak installs:** Prevent non-admin users changing flatpak stuff.
+- **Require admin (`wheel`) for Flatpak installs:** Prevent non-admin users changing flatpak stuff.
     ```nix
     restrictions.flatpakNeedsWheel = true;
     ```
