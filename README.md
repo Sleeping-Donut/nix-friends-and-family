@@ -81,6 +81,7 @@ If doing a fresh CLI install, target `/mnt/etc/nixos`. If modifying a running sy
 
 ```sh
 # Target directory (use /mnt/etc/nixos for fresh live USB install, or /etc/nixos for existing system)
+mkdir -p /mnt/etc/nixos
 cd /mnt/etc/nixos # or cd /etc/nixos
 
 sudo nix --extra-experimental-features 'nix-command flakes' flake init -t github:Sleeping-Donut/nix-friends-and-family
