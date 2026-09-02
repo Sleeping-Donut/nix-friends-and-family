@@ -150,6 +150,25 @@ chown :USERNAME_HERE /etc/nixos/home.nix
 ln -s /etc/nixos/home.nix /home/USERNAME_HERE/home.nix
 ```
 
+#### Restricting Users
+
+Some users might need to be restricted if its a child account or the like.
+To apply restrictions for child or restricted user accounts, configure the `restrictions` block inside the `flake.nix`:
+
+- **Require admin (`wheel`) for Faltpak installs:** Prevent non-admin users changing flatpak stuff.
+    ```nix
+    restrictions.flatpakNeedsWheel = true;
+    ```
+- **Child-Safer Network & DNS Filtering:** Enforces Cloudflare Family DNS (1.1.1.3), redirects YouTube to Google's Restricted Mode VIP, and blocks TikTok domains via a local dnsmasq instance.
+    ```nix
+    nixFriendsAndFamily.restrictions.childSaferNetwork = {
+      enable = true;
+      blockTikTok = true;
+      youtubeRestrictedMode = "strict"; # Options: "strict", "moderate", "block", "none"
+      childFriendlyDns = true;
+    };
+    ```
+
 ## Extra things to note
 
 These configs should work for raspberry pi as well, however there will probably need to be other stuff options set in your flake.
