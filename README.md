@@ -2,6 +2,10 @@
 
 Nix flakes to make an easy to update robust system for friends and family.
 
+This repo holds the main upstream flake with sensible defaults, while the `template/` directory contains the starter flake that will actually live on the users machine.
+
+This split gives the users complete freedom to customise their setup however they want, while still having access to the preconfigured modules defined upstream. The user's machine can freely update flatpaks and recieve rolling minor system updates in the backgorund for the latest of changes in that nixpkgs stable release. Major updates are handled centrally from the upstream flake in this repo so that the big, potentially breaking (and headache-inducing), changes when moving major nixpkgs version are predictable.
+
 ## Default Configuration
 
 ### System Maintenance & Upgrades
