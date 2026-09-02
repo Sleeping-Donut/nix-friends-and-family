@@ -29,7 +29,7 @@ in
     in {
       enable = true;
       theme = selectedTheme.theme;
-      themePackages = selectedTheme.pgks or [];
+      themePackages = selectedTheme.pkgs or [];
     };
   }
 }
