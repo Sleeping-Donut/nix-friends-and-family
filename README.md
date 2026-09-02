@@ -33,6 +33,11 @@ Nix flakes to make an easy to update robust system for friends and family.
 > [!NOTE]
 > If you used the NixOS Graphical Installer (Calamares) first, skip to **Step 1**.
 
+<details>
+<summary><strong>
+Manual Btrfs partitioning and mounting steps
+</strong></summary>
+
 | Partition@Subvolume | Mount Point | Recommended Size | Purpose |
 | :--- | :--- | :--- | :--- |
 | **`p1`**      | `/boot`    |~1-2GB        | EFI boot |
@@ -74,6 +79,8 @@ sudo mount -o subvol=@nix,compress=zstd,noatime "${PARTITION}3" /mnt/nix
 sudo mount -o subvol=@log,compress=zstd,noatime "${PARTITION}3" /mnt/var/log
 sudo mount "${PARTITION}1" /mnt/boot
 ```
+
+</details>
 
 ### Step 1: Initialise template
 
