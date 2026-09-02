@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   cfg = config.nixFriendsAndFamily;
+  isBoot = boot: cfg.bootloader == boot;
 in
 {
   config = lib.mkIf cfg.enable {
