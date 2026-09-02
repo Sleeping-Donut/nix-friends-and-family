@@ -21,9 +21,14 @@
           description = "Bootloader selection";
         };
         bootTheme = lib.mkOption {
-          type = lib.types.enum [ "oem" "breeze" ];
-          default = "oem";
-          description = "Boot splash theme: 'oem' = firmware/BIOS logo (bgrt), 'breeze' = Nix snowflake spinner";
+          type = lib.types.enum [ "oem" "oem-nix" "breeze" ];
+          default = "oem-nix";
+          description =''
+            Boot splash screen
+            - "oem": firmware/BIOS logo with circle spinner (bgrt)
+            - "oem-nix": firmware/BIOS logo with snowflake spinner
+            - "breeze": Nix snowflake spinner";
+          '';
         };
 
         restrictions = {

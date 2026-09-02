@@ -19,12 +19,17 @@ in
     boot.loader.limine.enable = lib.mkIf (isBoot "limine") true;
 
     # Boot splash (hide systemd boot messages from users)
-    boot.plymouth = {
+    boot.plymouth = let
+      themeMap = {
+        oem = { theme = "bgrt"; };
+        "oem-nix" = { theme = "nixos-bgrt"; pkgs = [ pkgs.nixos-bgrt-plymouth ]; };
+        breeze = { theme = "breeze"; pkgs = [ pkgs.kdePackages.breeze-plymouth ]; };
+      };
+      selectedTheme = themeMap.${cfg.bootTheme};
+    in {
       enable = true;
-      theme = {
-        oem = "bgrt";
-        breeze = "breeze";
-      }.${cfg.bootTheme};
+      theme = selectedTheme.theme;
+      themePackages = selectedTheme.pgks ? [];
     };
   }
 }
