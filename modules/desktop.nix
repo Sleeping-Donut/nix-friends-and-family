@@ -5,6 +5,14 @@ let
   isKde = cfg.desktop == "kde";
 in
 {
+  options.nixFriendsAndFamily = {
+    desktop = lib.mkOption {
+      type = lib.types.enum [ "gnome" "kde" "none" ];
+      default = "kde";
+      description = "Desktop Environment selection";
+    };
+  };
+
   config = lib.mkIf cfg.enable {
     # Flatpak Configuration
     services.flatpak = {

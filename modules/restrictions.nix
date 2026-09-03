@@ -4,6 +4,33 @@ let
   cfgSafer = cfg.restrictions.childSaferNetwork;
 in
 {
+  options.nixFriendsAndFamily = {
+    restrictions = {
+      flatpakNeedsWheel = lib.mkEnableOption "Require wheel/admin auth for Flatpak actions";
+
+      childSaferNetwork = {
+        enable = lib.mkEnableOption "Parental control DNS filtering and domain redirection";
+        blockTikTok = lib.mkOption {
+          type = lib.types.bool;
+          default = true;
+          description = "Block TikTok and related CDN domains.";
+        };
+
+        youtubeRestrictedMode = lib.mkOption {
+          type = lib.types.enum [ "strict" "moderate" "block" "none" ];
+          default = "strict";
+          description = "Force YouTube Restricted Mode via Google VIP DNS redirection.";
+        };
+
+        childFriendlyDns = lib.mkOption {
+          type = lib.types.bool;
+          default = true;
+          description = "Use Cloudflare Family DNS (1.1.1.3) upstream to filter adult content and malware.";
+        };
+      };
+    };
+  };
+
   config = lib.mkIf cfg.enable {
     security.polkit = lib.mkMerge [
 

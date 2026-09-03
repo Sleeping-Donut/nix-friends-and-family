@@ -4,6 +4,24 @@ let
   isBoot = boot: cfg.bootloader == boot;
 in
 {
+  options.nixFriendsAndFamily = {
+    bootloader = lib.mkOption {
+      type = lib.types.enum [ "systemd-boot" "grub" "limine" ];
+      default = "systemd-boot";
+      description = "Bootloader selection";
+    };
+    bootTheme = lib.mkOption {
+      type = lib.types.enum [ "oem" "oem-nix" "breeze" ];
+      default = "oem-nix";
+      description =''
+        Boot splash screen
+        - "oem": firmware/BIOS logo with circle spinner (bgrt)
+        - "oem-nix": firmware/BIOS logo with snowflake spinner
+        - "breeze": Nix snowflake spinner";
+      '';
+    };
+  };
+
   config = lib.mkIf cfg.enable {
     # Bootloader Selection
     boot.loader.systemd-boot = lib.mkIf (isBoot "systemd-boot") {
