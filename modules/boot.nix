@@ -41,14 +41,14 @@ in
     # Boot splash (hide systemd boot messages from users)
     boot.plymouth = let
       themeMap = {
-        spinner = { theme = "spinner"; }
+        spinner = { theme = "spinner"; };
         oem = { theme = "bgrt"; };
         "oem-nix" = { theme = "nixos-bgrt"; pkgs = [ pkgs.nixos-bgrt-plymouth ]; };
         breeze = { theme = "breeze"; pkgs = [ pkgs.kdePackages.breeze-plymouth ]; };
       };
       selectedTheme = let
         isX86 = pkgs.stdenv.hostPlatform.isx86_64;
-      in if isX86 themeMap.${cfg.bootTheme} else themeMap.spinner; # dumb fallback for all platforms
+      in if isX86 then themeMap.${cfg.bootTheme} else themeMap.spinner; # dumb fallback for all platforms
     in {
       enable = true;
       theme = selectedTheme.theme;

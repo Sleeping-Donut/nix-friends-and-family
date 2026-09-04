@@ -24,7 +24,6 @@ in
 
       childFriendlyDns = lib.mkEnableOption "Use Cloudflare Family DNS (1.1.1.3) upstream to filter adult content and malware."
         // { default = true; };
-      };
 
       browserLockdownUsers = lib.mkOption { # TODO: split to browserLockdown = { users, restriction1... }
         type = lib.types.listOf lib.types.str;
