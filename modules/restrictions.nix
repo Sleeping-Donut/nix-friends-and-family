@@ -29,7 +29,7 @@ in
     security.polkit = lib.mkMerge [
 
     # Polkit Restriction: Require wheel for Flatpak management
-      (lib.mkIf cfg.restrictions.flatpakNeedsWheel {
+      (lib.mkIf cfg.flatpakNeedsWheel {
         extraConfig = ''
           if (action.id.startsWith("org.freedesktop.Flatpak.") && !subject.isInGroup("wheel")) {
             return polkit.Result.AUTH_ADMIN;
