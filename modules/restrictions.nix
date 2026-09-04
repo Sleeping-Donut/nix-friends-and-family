@@ -13,8 +13,11 @@ in
       blockTikTok = lib.mkEnableOption "Block TikTok and related CDN domains."
         // { default = true; };
 
-      youtubeRestrictedMode = lib.mkEnableOption "Force YouTube Restricted Mode via Google VIP DNS redirection."
-        // { default = true; };
+      youtubeRestrictedMode = lib.mkOption {
+        type = lib.types.enum [ "strict" "moderate" "block" "none" ];
+        default = "strict";
+        description = "Force YouTube Restricted Mode via Google VIP DNS redirection.";
+      };
 
       childFriendlyDns = lib.mkEnableOption "Use Cloudflare Family DNS (1.1.1.3) upstream to filter adult content and malware."
         // { default = true; };
