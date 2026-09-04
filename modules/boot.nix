@@ -12,10 +12,11 @@ in
       description = "Bootloader selection";
     };
     bootTheme = lib.mkOption {
-      type = lib.types.enum [ "oem" "oem-nix" "breeze" ];
+      type = lib.types.enum [ "spinner" "oem" "oem-nix" "breeze" ];
       default = "oem-nix";
       description =''
         Boot splash screen
+        - "spinner": default plymouth theme, works on all
         - "oem": firmware/BIOS logo with circle spinner (bgrt)
         - "oem-nix": firmware/BIOS logo with snowflake spinner
         - "breeze": Nix snowflake spinner";
@@ -40,11 +41,14 @@ in
     # Boot splash (hide systemd boot messages from users)
     boot.plymouth = let
       themeMap = {
+        spinner = { theme = "spinner"; }
         oem = { theme = "bgrt"; };
         "oem-nix" = { theme = "nixos-bgrt"; pkgs = [ pkgs.nixos-bgrt-plymouth ]; };
         breeze = { theme = "breeze"; pkgs = [ pkgs.kdePackages.breeze-plymouth ]; };
       };
-      selectedTheme = themeMap.${cfg.bootTheme};
+      selectedTheme = let
+        isX86 = pkgs.stdenv.hostPlatform.isx86_64;
+      in if isX86 themeMap.${cfg.bootTheme} else themeMap.spinner; # dumb fallback for all platforms
     in {
       enable = true;
       theme = selectedTheme.theme;
