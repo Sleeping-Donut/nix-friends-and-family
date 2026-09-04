@@ -10,6 +10,9 @@ in
     childSaferNetwork = {
       enable = lib.mkEnableOption "Parental control DNS filtering and domain redirection";
 
+      ignoreDhcpDns = lib.mkEnableOption "Ignore the DHCP provided DNS server."
+        // { default = true; };
+
       blockTikTok = lib.mkEnableOption "Block TikTok and related CDN domains."
         // { default = true; };
 
@@ -47,7 +50,7 @@ in
       enable = true;
       settings = {
         # Ignore DHCP-provided DNS servers from routers so filtering cannot be bypassed
-        no-resolv = true;
+        no-resolv = lib.mkIf cfgSafer.ignoreDhcpDns true;
 
         # Upstream child-friendly DNS servers (Cloudflare Family)
         server = lib.optionals cfgSafer.childFriendlyDns [
