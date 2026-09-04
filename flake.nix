@@ -36,5 +36,23 @@
         ./modules
       ];
     };
+
+    # Typecheck the modules — run: nix eval .#checks.x86_64-linux.module-typecheck
+    checks.x86_64-linux.module-typecheck = (nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        self.nixosModules.nixFriendsAndFamily
+        {
+          system.stateVersion = "26.05";
+          nixFriendsAndFamily.recommended = true;
+          nixFriendsAndFamily.desktop.de = "kde";
+          networking.hostName = "test";
+          users.users.test = { isNormalUser = true; };
+          # Stub hardware config to skip fileSystems assertion
+          fileSystems."/".device = "none";
+          fileSystems."/".fsType = "tmpfs";
+        }
+      ];
+    }).config.system.build.toplevel;
   };
 }
