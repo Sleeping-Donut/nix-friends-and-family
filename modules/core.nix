@@ -14,64 +14,78 @@ in
     homeManager = lib.mkEnableOption "Enable Options and defaults for home manager" // { default = true; };
   };
 
-  config = lib.mkIf cfg.enable (lib.mkDefault {
+  config = lib.mkMerge [
     # Setup GC, store optimiser and flakes cli stuff
-    nix = lib.mkIf cfg.nix {
-      gc = {
-        automatic = true;
-        dates = "weekly";
-        options = "--delete-older-than 14d";
+    (lib.mkIf (cfg.enable && cfg.nix) (lib.mkDefault {
+      nix = {
+        gc = {
+          automatic = true;
+          dates = "weekly";
+          options = "--delete-older-than 14d";
+        };
+        settings = {
+          auto-optimise-store = true;
+          experimental-features = [ "nix-command" "flakes" ];
+        };
       };
-      settings = {
-        auto-optimise-store = true;
-        experimental-features = [ "nix-command" "flakes" ];
-      };
-    };
+    }))
 
     # Networking & Hardware Defaults
-    networking.networkmanager.enable = lib.mkIf cfg.networking true;
-    hardware.bluetooth.enable = lib.mkIf cfg.networking true;
-    hardware.enableRedistributableFirmware = lib.mkIf cfg.networking true;
-    services.fwupd.enable = lib.mkIf cfg.networking true;
+    (lib.mkIf (cfg.enable && cfg.networking) (lib.mkDefault {
+      networking.networkmanager.enable = true;
+      hardware.bluetooth.enable = true;
+      hardware.enableRedistributableFirmware = true;
+      services.fwupd.enable = true;
+    }))
 
     # Audio via PipeWire
-    services.pipewire = lib.mkIf cfg.audio {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-    };
+    (lib.mkIf (cfg.enable && cfg.audio) (lib.mkDefault {
+      services.pipewire = {
+        enable = true;
+        alsa.enable = true;
+        alsa.support32Bit = true;
+        pulse.enable = true;
+      };
+    }))
 
     # Printing
-    services.printing.enable = lib.mkIf cfg.printing true;
-    services.avahi = lib.mkIf cfg.printing {
-      enable = true;
-      nssmdns4 = true;
-    };
+    (lib.mkIf (cfg.enable && cfg.printing) (lib.mkDefault {
+      services.printing.enable = true;
+      services.avahi = {
+        enable = true;
+        nssmdns4 = true;
+      };
+    }))
 
     # System Auto-updates
-    system.autoUpgrade = lib.mkIf cfg.updates {
-      enable = true;
-      flake = "/etc/nixos";
-      flags = [
-        "--update-input" "nix-friends-and-family"
-        "--no-write-lock-file"
-      ];
-      dates = "03:00";
-      randomizedDelaySec = "45min";
-      allowReboot = false; # Let user reboot on their own time
-      operation = "boot"; # apply generation next boot not immediately
-    };
+    (lib.mkIf (cfg.enable && cfg.updates) (lib.mkDefault {
+      system.autoUpgrade = {
+        enable = true;
+        flake = "/etc/nixos";
+        flags = [
+          "--update-input" "nix-friends-and-family"
+          "--no-write-lock-file"
+        ];
+        dates = "03:00";
+        randomizedDelaySec = "45min";
+        allowReboot = false;
+        operation = "boot";
+      };
+    }))
 
     # Locale & Timezone
-    time.timeZone = lib.mkIf cfg.locale "Europe/London";
-    i18n = lib.mkIf cfg.locale {
-      defaultLocale = "en_GB.UTF-8";
-      extraLocaleSettings.LC_ALL = "en_GB.UTF-8";
-    };
+    (lib.mkIf (cfg.enable && cfg.locale) (lib.mkDefault {
+      time.timeZone = "Europe/London";
+      i18n = {
+        defaultLocale = "en_GB.UTF-8";
+        extraLocaleSettings.LC_ALL = "en_GB.UTF-8";
+      };
+    }))
 
     # Home manager
-    home-manager.useGlobalPkgs = lib.mkIf cfg.homeManager true;
-    home-manager.useUserPackages = lib.mkIf cfg.homeManager true;
-  });
+    (lib.mkIf (cfg.enable && cfg.homeManager) (lib.mkDefault {
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
+    }))
+  ];
 }

@@ -24,30 +24,29 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable (lib.mkDefault (lib.mkMerge [
-    # Bootloader Selection — each submodule gets its own mkIf block
-    (lib.mkIf (isBoot "systemd-boot") {
+  config = lib.mkMerge [
+    (lib.mkIf (cfg.enable && isBoot "systemd-boot") (lib.mkDefault {
       boot.loader.systemd-boot = {
         enable = true;
         editor = false;
       };
-    })
-    (lib.mkIf (isBoot "grub") {
+    }))
+    (lib.mkIf (cfg.enable && isBoot "grub") (lib.mkDefault {
       boot.loader.grub = {
         enable = true;
         device = "nodev";
         efiSupport = true;
       };
-    })
-    (lib.mkIf (isBoot "limine") {
+    }))
+    (lib.mkIf (cfg.enable && isBoot "limine") (lib.mkDefault {
       boot.loader.limine.enable = true;
-    })
-    (lib.mkIf (isBoot "grub" || isBoot "systemd-boot") {
+    }))
+    (lib.mkIf (cfg.enable && (isBoot "grub" || isBoot "systemd-boot")) (lib.mkDefault {
       boot.loader.efi.canTouchEfiVariables = true;
-    })
+    }))
 
     # Boot splash (hide systemd boot messages from users)
-    {
+    (lib.mkIf cfg.enable (lib.mkDefault {
       boot.plymouth = let
         themeMap = {
           spinner = { theme = "spinner"; };
@@ -57,13 +56,13 @@ in
         };
         selectedTheme = let
           isX86 = pkgs.stdenv.hostPlatform.isx86_64;
-        in if isX86 then themeMap.${cfg.bootTheme} else themeMap.spinner; # dumb fallback for all platforms
+        in if isX86 then themeMap.${cfg.bootTheme} else themeMap.spinner;
       in {
         enable = true;
         theme = selectedTheme.theme;
         themePackages = selectedTheme.pkgs or [];
       };
-    }
-  ]));
+    }))
+  ];
 }
 
