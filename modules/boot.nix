@@ -26,15 +26,12 @@ in
 
   config = lib.mkIf cfg.enable (lib.mkDefault {
     # Bootloader Selection
-    boot.loader.systemd-boot = lib.mkIf (isBoot "systemd-boot") {
-      enable = true;
-      editor = false;
-    };
-    boot.loader.grub = lib.mkIf (isBoot "grub") {
-      enable = true;
-      device = "nodev";
-      efiSupport = true;
-    };
+    boot.loader.systemd-boot.enable = lib.mkIf (isBoot "systemd-boot") true;
+    boot.loader.systemd-boot.editor = lib.mkIf (isBoot "systemd-boot") false;
+
+    boot.loader.grub.enable = lib.mkIf (isBoot "grub") true;
+    boot.loader.grub.device = lib.mkIf (isBoot "grub") "nodev";
+    boot.loader.grub.efiSupport = lib.mkIf (isBoot "grub") true;
     boot.loader.efi.canTouchEfiVariables = lib.mkIf (isBoot "grub" || isBoot "systemd-boot") true;
     boot.loader.limine.enable = lib.mkIf (isBoot "limine") true;
 
