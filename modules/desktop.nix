@@ -24,7 +24,6 @@ in
           enable = true;
           onCalendar = "weekly";
         };
-        onActivation = true;
       };
       remotes = [
         { name = "flathub"; location = "https://dl.flathub.org/repo/flathub.flatpakrepo"; }
