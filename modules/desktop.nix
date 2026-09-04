@@ -15,7 +15,7 @@ in
     flatpak = lib.mkEnableOption "Enable Options and defaults for flatpak" // { default = true; };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.enable (lib.mkDefault {
     # Flatpak Configuration
     services.flatpak = {
       enable = true;
@@ -52,6 +52,6 @@ in
       pkgs.kdePackages.kpipewire
       pkgs.kdePackages.flatpak-kcm
     ];
-  }
+  });
 }
 

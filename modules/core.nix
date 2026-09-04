@@ -14,7 +14,7 @@ in
     homeManager = lib.mkEnableOption "Enable Options and defaults for home manager" // { default = true; };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.enable (lib.mkDefault {
     # Setup GC, store optimiser and flakes cli stuff
     nix = lib.mkIf cfg.nix {
       gc = {
@@ -73,5 +73,5 @@ in
     # Home manager
     home-manager.useGlobalPkgs = lib.mkIf cfg.homeManager true;
     home-manager.useUserPackages = lib.mkIf cfg.homeManager true;
-  };
+  });
 }

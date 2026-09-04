@@ -12,10 +12,10 @@ in {
   ];
 
   config = lib.mkIf cfg.recommended {
-    nixFriendsAndFamily = {
-      core.enabled = lib.mkDefault true;
-      boot.enabled = lib.mkDefault true;
-      desktop.enabled = lib.mkDefault true;
+    nixFriendsAndFamily = lib.mkDefault {
+      core.enabled = true;
+      boot.enabled = true;
+      desktop.enabled = true;
     };
   };
 }

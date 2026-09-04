@@ -22,7 +22,7 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.enable (lib.mkDefault {
     security.polkit = lib.mkMerge [
 
     # Polkit Restriction: Require wheel for Flatpak management
@@ -81,6 +81,6 @@ in
         );
       };
     };
-  }
+  });
 }
 

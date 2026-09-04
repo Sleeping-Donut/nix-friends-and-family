@@ -23,7 +23,7 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.enable (lib.mkDefault {
     # Bootloader Selection
     boot.loader.systemd-boot = lib.mkIf (isBoot "systemd-boot") {
       enable = true;
@@ -50,6 +50,6 @@ in
       theme = selectedTheme.theme;
       themePackages = selectedTheme.pkgs or [];
     };
-  }
+  });
 }
 
