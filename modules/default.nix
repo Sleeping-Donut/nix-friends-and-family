@@ -13,9 +13,9 @@ in {
 
   config = lib.mkIf cfg.recommended {
     nixFriendsAndFamily = lib.mkDefault {
-      core.enabled = true;
-      boot.enabled = true;
-      desktop.enabled = true;
+      core.enable = true;
+      boot.enable = true;
+      desktop.enable = true;
     };
   };
 }
