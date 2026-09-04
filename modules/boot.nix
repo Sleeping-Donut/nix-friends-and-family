@@ -7,7 +7,7 @@ in
   options.nixFriendsAndFamily.boot = {
     enable = lib.mkEnableOption "Enable Options and defaults for boot stuff";
     bootloader = lib.mkOption {
-      type = lib.types.enum [ "systemd-boot" "grub" "limine" ];
+      type = lib.types.enum [ "systemd-boot" "grub" "limine" "none" ];
       default = "systemd-boot";
       description = "Bootloader selection";
     };
