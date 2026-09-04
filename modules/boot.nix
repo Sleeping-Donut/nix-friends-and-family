@@ -1,10 +1,11 @@
 { config, lib, pkgs, ... }:
 let
-  cfg = config.nixFriendsAndFamily;
+  cfg = config.nixFriendsAndFamily.boot;
   isBoot = boot: cfg.bootloader == boot;
 in
 {
-  options.nixFriendsAndFamily = {
+  options.nixFriendsAndFamily.boot = {
+    enable = lib.mkEnableOption "Enable Options and defaults for boot stuff";
     bootloader = lib.mkOption {
       type = lib.types.enum [ "systemd-boot" "grub" "limine" ];
       default = "systemd-boot";

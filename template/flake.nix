@@ -21,8 +21,8 @@
 
           {
             system.stateVersion = "26.05";
-            nixFriendsAndFamily.enable = true;
-            nixFriendsAndFamily.desktop = "kde";
+            nixFriendsAndFamily.recommended = true;
+            nixFriendsAndFamily.desktop.de = "kde";
 
             # Allow unfree packages per-name instead of the base module's blanket
             # allowUnfree = true. Uncomment and add package names as needed.

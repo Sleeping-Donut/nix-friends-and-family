@@ -1,16 +1,18 @@
 { config, lib, pkgs, ... }:
 let
-  cfg = config.nixFriendsAndFamily;
-  isGnome = cfg.desktop == "gnome";
-  isKde = cfg.desktop == "kde";
+  cfg = config.nixFriendsAndFamily.desktop;
+  isGnome = cfg.de == "gnome";
+  isKde = cfg.de == "kde";
 in
 {
-  options.nixFriendsAndFamily = {
-    desktop = lib.mkOption {
+  options.nixFriendsAndFamily.desktop = {
+    enable = lib.mkEnableOption "Enable Options and defaults for desktop stuff";
+    de = lib.mkOption {
       type = lib.types.enum [ "gnome" "kde" "none" ];
       default = "kde";
       description = "Desktop Environment selection";
     };
+    flatpak = lib.mkEnableOption "Enable Options and defaults for flatpak" // { default = true; };
   };
 
   config = lib.mkIf cfg.enable {

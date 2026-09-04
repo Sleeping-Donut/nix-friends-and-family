@@ -1,32 +1,23 @@
 { config, lib, ... }:
 let
-  cfg = config.nixFriendsAndFamily;
-  cfgSafer = cfg.restrictions.childSaferNetwork;
+  cfg = config.nixFriendsAndFamily.restrictions;
+  cfgSafer = cfg.childSaferNetwork;
 in
 {
-  options.nixFriendsAndFamily = {
-    restrictions = {
-      flatpakNeedsWheel = lib.mkEnableOption "Require wheel/admin auth for Flatpak actions";
+  options.nixFriendsAndFamily.restrictions = {
+    flatpakNeedsWheel = lib.mkEnableOption "Require wheel/admin auth for Flatpak actions";
 
-      childSaferNetwork = {
-        enable = lib.mkEnableOption "Parental control DNS filtering and domain redirection";
-        blockTikTok = lib.mkOption {
-          type = lib.types.bool;
-          default = true;
-          description = "Block TikTok and related CDN domains.";
-        };
+    childSaferNetwork = {
+      enable = lib.mkEnableOption "Parental control DNS filtering and domain redirection";
 
-        youtubeRestrictedMode = lib.mkOption {
-          type = lib.types.enum [ "strict" "moderate" "block" "none" ];
-          default = "strict";
-          description = "Force YouTube Restricted Mode via Google VIP DNS redirection.";
-        };
+      blockTikTok = lib.mkEnableOption "Block TikTok and related CDN domains."
+        // { default = true; };
 
-        childFriendlyDns = lib.mkOption {
-          type = lib.types.bool;
-          default = true;
-          description = "Use Cloudflare Family DNS (1.1.1.3) upstream to filter adult content and malware.";
-        };
+      youtubeRestrictedMode = lib.mkEnableOption "Force YouTube Restricted Mode via Google VIP DNS redirection."
+        // { default = true; };
+
+      childFriendlyDns = lib.mkEnableOption "Use Cloudflare Family DNS (1.1.1.3) upstream to filter adult content and malware."
+        // { default = true; };
       };
     };
   };
