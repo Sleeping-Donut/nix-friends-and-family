@@ -25,6 +25,12 @@ in
       childFriendlyDns = lib.mkEnableOption "Use Cloudflare Family DNS (1.1.1.3) upstream to filter adult content and malware."
         // { default = true; };
       };
+
+      browserLockdownUsers = lib.mkOption { # TODO: split to browserLockdown = { users, restriction1... }
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+        description = "List of usernames that should have locked-down browser policies forcibly mounted into their session namespace.";
+      };
     };
   };
 
@@ -87,6 +93,11 @@ in
         );
       };
     };
+
+    # TODO: broswer policy lockdown
+    # firefoxPolicyDir = pkgs.writeTextDir "firefox/policies/policies.json" (builtins.toJSON {
+    # and chrome, zen, helium etc
+    # pam namespace policies to specified users
   });
 }
 
