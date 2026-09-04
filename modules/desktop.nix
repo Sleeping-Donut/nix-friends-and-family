@@ -9,7 +9,7 @@ in
     enable = lib.mkEnableOption "Enable Options and defaults for desktop stuff";
     de = lib.mkOption {
       type = lib.types.enum [ "gnome" "kde" "none" ];
-      default = "kde";
+      default = "none";
       description = "Desktop Environment selection";
     };
     flatpak = lib.mkEnableOption "Enable Options and defaults for flatpak" // { default = true; };
